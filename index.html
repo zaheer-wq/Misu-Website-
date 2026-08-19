@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MISÙ — Tiramisù &amp; Matcha, Reimagined</title>
+  <meta name="description" content="MISÙ — Africa's first tiramisù and matcha specialty café. Simple, sweet, authentic." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- Cinematic preloader -->
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader-mark"><img src="/images/brand/misu-logo-white.webp" alt="MISÙ" /></div>
+    <div class="preloader-bar"><span></span></div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Nav -->
+  <header class="site-header" id="siteHeader">
+    <a href="#home" class="brand-mark"><img src="/images/brand/misu-logo-white.webp" alt="MISÙ" /></a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#tiramisu">Tiramisù</a>
+      <a href="#matcha">Matcha</a>
+      <a href="#space">Our Space</a>
+      <a href="#events">Events</a>
+      <a href="#franchise">Franchise</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <canvas id="matchaCanvas" class="matcha-canvas"></canvas>
+      <div class="hero-vignette"></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal-line">Africa's first Tiramisù &amp; Matcha Café.</p>
+        <h1 class="hero-title">
+          <span class="reveal-line"><span class="reveal-inner">Simple,</span></span>
+          <span class="reveal-line"><span class="reveal-inner">Sweet</span></span>
+          <span class="reveal-line"><span class="reveal-inner">&amp; Authentic.</span></span>
+        </h1>
+        <p class="hero-sub reveal-line"><span class="reveal-inner">Layer by layer, cup by cup — crafted in Claremont, poured with intent.</span></p>
+        <div class="hero-actions reveal-line">
+          <span class="reveal-inner hero-actions-inner">
+            <a href="#tiramisu" class="btn btn-primary" data-magnetic>Explore Tiramisù</a>
+            <a href="#matcha" class="btn btn-ghost" data-magnetic>Explore Matcha</a>
+          </span>
+        </div>
+      </div>
+      <div class="scroll-cue">
+        <span></span>
+        <p>Scroll</p>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Simple</span><span>·</span><span>Sweet</span><span>·</span><span>Authentic</span><span>·</span>
+        <span>Handcrafted Daily</span><span>·</span><span>Ceremonial Grade</span><span>·</span><span>Claremont, Cape Town</span><span>·</span>
+        <span>Simple</span><span>·</span><span>Sweet</span><span>·</span><span>Authentic</span><span>·</span>
+        <span>Handcrafted Daily</span><span>·</span><span>Ceremonial Grade</span><span>·</span><span>Claremont, Cape Town</span><span>·</span>
+      </div>
+    </div>
+
+    <!-- RICH LAYERS (tiramisu build) -->
+    <section id="tiramisu" class="layers-section">
+      <div class="layers-pin">
+        <div class="layers-copy">
+          <p class="eyebrow">Rich Layers</p>
+          <h2 id="layersHeading">Coffee-Soaked Sponge.</h2>
+          <p class="layers-desc" id="layersDesc">Every MISÙ tiramisù is built the slow way — layer resting on layer, until it can't be rushed any further.</p>
+          <div class="layers-progress">
+            <div class="layers-progress-bar" id="layersProgressBar"></div>
+          </div>
+        </div>
+        <div class="layers-visual">
+          <div class="tiramisu-ambient-glow"></div>
+          <div class="tiramisu-photo-stack" id="tiramisuStack">
+            <img class="t-photo t-drizzle" src="/images/layers/drizzle.webp" alt="Chocolate drizzle" data-layer="6" />
+            <img class="t-photo t-swirl" src="/images/layers/cream-swirl.webp" alt="Hand-piped mascarpone" data-layer="5" />
+            <img class="t-photo t-dust" src="/images/layers/cocoa-dust.webp" alt="Cocoa dust" data-layer="4" />
+            <img class="t-photo t-cream" src="/images/layers/cream-disc.webp" alt="Mascarpone cream" data-layer="3" />
+            <img class="t-photo t-biscuit" src="/images/layers/biscuit.webp" alt="Coffee-soaked sponge" data-layer="2" />
+            <img class="t-photo t-cream" src="/images/layers/cream-disc.webp" alt="Mascarpone cream" data-layer="1" />
+            <img class="t-photo t-biscuit" src="/images/layers/biscuit.webp" alt="Coffee-soaked sponge" data-layer="0" />
+            <img class="t-photo t-cup" src="/images/layers/cup.webp" alt="MISÙ cup" data-role="cup" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLAVOUR SHOWCASE -->
+    <section class="flavours-section">
+      <div class="section-head">
+        <p class="eyebrow">Endless Flavour</p>
+        <h2>Eight ways to fall in love.</h2>
+        <p class="section-sub">Drag through our Tiramisù Menu — flavours change regularly, so keep checking back for exciting new flavours.</p>
+      </div>
+      <div class="flavour-carousel" id="flavourCarousel">
+        <div class="flavour-track" id="flavourTrack">
+          <!-- cards injected by JS -->
+        </div>
+      </div>
+      <p class="drag-hint">← drag to explore →</p>
+      <p class="flavours-footnote">Images are computer-generated illustrations, created to portray the layers and components of our tiramisù.</p>
+    </section>
+
+    <!-- MATCHA RITUAL — real product video, pinned full-bleed behind the
+         whole section, with a scroll-scrubbed scene change from the
+         heading moment into the flavour grid. -->
+    <section id="matcha" class="matcha-section">
+      <div class="matcha-pin">
+        <div class="matcha-video-bg">
+          <video
+            id="matchaVideo"
+            poster="/video/matcha-sip-poster.jpg"
+            muted
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+          >
+            <source src="/video/matcha-sip.webm" type="video/webm" />
+            <source src="/video/matcha-sip.mp4" type="video/mp4" />
+          </video>
+          <div class="matcha-video-vignette"></div>
+          <div class="matcha-video-dim" id="matchaVideoDim"></div>
+        </div>
+
+        <div class="matcha-content">
+          <div class="section-head light matcha-scene" id="matchaHead">
+            <p class="eyebrow">The Ritual</p>
+            <h2>Highest-grade matcha, cultivated close to the river in Uji, Japan — grown according to the traditional tana method.</h2>
+            <p class="section-sub">Ground by traditional hikiusu — stone mortar and pestle — into an ultra-fine, highly prized emerald powder, creating the perfect umami flavour.</p>
+          </div>
+          <div class="matcha-grid matcha-scene" id="matchaGrid"></div>
+        </div>
+
+        <p class="matcha-video-caption">Whisked to order · Claremont</p>
+      </div>
+    </section>
+
+    <!-- OUR SPACE — real interior photo, given a slow continuous Ken Burns
+         drift plus a scroll-linked parallax shift so it reads like a living
+         video pan rather than a static shot. Below the pinned photo, a short
+         row of highlights fills out the picture in words. -->
+    <section id="space" class="space-section">
+      <div class="space-hero">
+        <div class="space-parallax">
+          <div class="space-layer space-layer--back">
+            <img
+              class="space-photo"
+              src="/images/space/cafe-interior.webp"
+              width="2000"
+              height="1126"
+              alt="Inside the MISÙ Claremont café — warm neutral tones, glowing display shelving and the gelato counter"
+              loading="lazy"
+            />
+            <div class="space-photo-shine" aria-hidden="true"></div>
+          </div>
+          <div class="space-layer space-layer--mid"></div>
+          <div class="space-vignette" aria-hidden="true"></div>
+          <div class="space-layer space-layer--front">
+            <p class="eyebrow">Our Space</p>
+            <h2>A destination by design.<br />Made to be experienced, not just visited.</h2>
+            <p class="section-sub">11 Warwick Street, Cavendish Close, Claremont — a room built for lingering.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-highlights">
+        <p class="space-highlights-intro">A warm, minimalist café designed to feel like a sweet escape from the city — a cinematic dessert and matcha bar where premium tiramisù takes centre stage.</p>
+        <div class="space-highlights-grid">
+          <div class="space-highlight">
+            <span class="space-highlight-mark">&#10022;</span>
+            <p>A visually immersive space, crafted for both comfort and creativity — every corner made to be photographed and remembered.</p>
+          </div>
+          <div class="space-highlight">
+            <span class="space-highlight-mark">&#10022;</span>
+            <p>The perfect blend of indulgence and sophistication — whether you're stopping in for a quick matcha or staying for hours.</p>
+          </div>
+          <div class="space-highlight">
+            <span class="space-highlight-mark">&#10022;</span>
+            <p>Comfortable lounge seating and café tables, built for slow mornings, easy catch-ups, and quiet afternoons of work.</p>
+          </div>
+          <div class="space-highlight">
+            <span class="space-highlight-mark">&#10022;</span>
+            <p>A calm, quietly luxurious atmosphere — soft neutral tones and glowing ambient light that photograph as good as they feel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTS — replaces the old generic Product Spotlight section. Real
+         package/pricing data from the MiSù Events one-pager. The drag-to-
+         rotate cube is kept (re-themed around what events offer) and
+         paired with an AI-rendered "exploded tray" visual, since no real
+         unpacked-layer photography exists yet for the tray format. -->
+    <section id="events" class="events-section">
+      <div class="section-head">
+        <p class="eyebrow">Events</p>
+        <h2>A sweet centrepiece for your celebration.</h2>
+        <p class="section-sub">Elegant. Indulgent. Unforgettable. Handcrafted tiramisù, beautifully presented for weddings, celebrations &amp; corporate occasions.</p>
+      </div>
+
+      <div class="events-showcase">
+        <div class="spotlight-stage" id="spotlightStage">
+          <div class="spotlight-object" id="spotlightObject">
+            <div class="cube-face cube-top"><span>Custom Art</span></div>
+            <div class="cube-face cube-front"><span>Tiramisù Tray</span></div>
+            <div class="cube-face cube-back"><span>Perspex Box</span></div>
+            <div class="cube-face cube-right"><span>Live Serving</span></div>
+            <div class="cube-face cube-left"><span>Weddings</span></div>
+            <div class="cube-face cube-bottom"><span>Corporate</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="events-packages">
+        <div class="events-package">
+          <div class="events-package-head">
+            <span class="events-package-tag">Classic</span>
+            <h3>Tiramisù Tray</h3>
+          </div>
+          <p>A beautifully prepared tray of our signature tiramisù in a single flavour of your choice. Perfect for intimate gatherings, birthday celebrations, and self-service dessert stations.</p>
+          <p class="events-package-includes">Includes custom art topping (client supplies artwork)</p>
+          <div class="events-package-price">
+            <span class="events-package-amount">R1,600</span>
+            <span class="events-package-serves">Serves 30–35 guests</span>
+          </div>
+        </div>
+
+        <div class="events-package events-package--premium">
+          <div class="events-package-head">
+            <span class="events-package-tag">Premium</span>
+            <h3>Luxury Perspex Box</h3>
+          </div>
+          <p>An impressive large-format tiramisù presented in an elegant, transparent Perspex box. A true showpiece for weddings, corporate launches, and upscale celebrations.</p>
+          <p class="events-package-includes">Includes custom art topping · Delivery included</p>
+          <div class="events-package-price">
+            <span class="events-package-amount">R6,200</span>
+            <span class="events-package-serves">Serves 80–90 guests</span>
+          </div>
+        </div>
+
+        <div class="events-package">
+          <div class="events-package-head">
+            <span class="events-package-tag">Interactive</span>
+            <h3>Live Serving Experience</h3>
+          </div>
+          <p>Create a memorable dessert moment with our signature roaming service — a professional server circulates your event, personally serving fresh portions from beautifully presented trays.</p>
+          <p class="events-package-includes">One professional live server · Once-off setup · Full service</p>
+          <div class="events-package-price">
+            <span class="events-package-amount">R6,660</span>
+            <span class="events-package-serves">All inclusive · Serves 45 guests</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="events-coverage">Need more coverage? Additional tray + live server: R2,000 per server + R48 per serving (45 servings per tray) — each additional server includes their own tray and full setup.</p>
+
+      <div class="events-flavours">
+        <p class="events-flavours-label">Signature flavours — one per tray or serving station</p>
+        <div class="events-flavours-list">
+          <span>Classic</span><span>Pistachio</span><span>Lotus Biscoff</span><span>Caramel Chai</span><span>Bannoffee</span><span>Bar-One</span><span>Hazelnut</span><span>White Chocolate Hazelnut</span><span>Ferrero</span>
+        </div>
+      </div>
+
+      <div class="events-occasions">
+        <span>Weddings &amp; Receptions</span><span>Birthday Celebrations</span><span>Corporate Functions</span><span>Product Launches</span><span>Private Parties</span><span>Engagement Parties</span><span>Baby Showers</span>
+      </div>
+
+      <div class="events-cta">
+        <p class="events-cta-line">Let MiSù create a sweet centrepiece for your next event — and turn dessert into a memorable occasion.</p>
+        <a href="mailto:info@misucafe.co.za" class="btn btn-primary" data-magnetic>Enquire About Events</a>
+      </div>
+    </section>
+
+    <!-- FRANCHISE — the "Join the MISÙ Franchise" pitch, built from the
+         franchise one-pager copy Zaheer sent. Hero head + a highlighted
+         line, then a two-column body (the business case alongside a
+         "Why MISÙ" checklist), closing on a single CTA to the Typeform
+         application. -->
+    <section id="franchise" class="franchise-section">
+      <div class="section-head">
+        <p class="eyebrow">For The Modern Entrepreneur</p>
+        <h2>Designed to be experienced.</h2>
+        <p class="section-sub">MISÙ is a modern luxury grab-and-go café designed for today's fast-moving lifestyle. We specialise in elevated tiramisù and premium matcha, created for quick moments without compromising on quality or experience.</p>
+      </div>
+
+      <p class="franchise-intro">Every detail, from flavour to presentation, is curated to deliver indulgence with efficiency — making MISÙ the perfect balance of speed, style and sophistication.</p>
+
+      <div class="franchise-body">
+        <div class="franchise-copy">
+          <p>MISÙ is a modern luxury grab-and-go café concept built for today's fast-paced, experience-driven world. Specialising in elevated tiramisù and premium matcha, MISÙ delivers indulgence without delay — combining speed, style and consistency in a compact, highly scalable format.</p>
+          <p>Designed as a low-overhead, high-margin model, MISÙ offers franchise partners a proven system, strong brand identity and a concept that resonates with global trends and modern urban lifestyles.</p>
+          <p>This is an active business opportunity for entrepreneurs who value quality, efficiency and design-led experiences.</p>
+        </div>
+
+        <div class="franchise-why">
+          <h3>Why MISÙ</h3>
+          <ul class="franchise-why-list">
+            <li><span class="franchise-why-title">Luxury Grab-and-Go Model</span><span class="franchise-why-desc">Premium products, fast service</span></li>
+            <li><span class="franchise-why-title">Low Overheads</span><span class="franchise-why-desc">Compact footprint, streamlined operations</span></li>
+            <li><span class="franchise-why-title">Trend-Driven Menu</span><span class="franchise-why-desc">Tiramisù &amp; matcha</span></li>
+            <li><span class="franchise-why-title">Scalable Concept</span><span class="franchise-why-desc">Designed for local and international growth</span></li>
+            <li><span class="franchise-why-title">Proven Systems &amp; Support</span><span class="franchise-why-desc">Built for consistency and profitability</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="franchise-cta">
+        <p class="franchise-cta-line">If you're ready to own a refined, future-focused café concept, MISÙ offers the opportunity to grow with a brand built to scale.</p>
+        <a href="https://form.typeform.com/to/Ix5bfp4M" class="btn btn-primary" target="_blank" rel="noopener" data-magnetic>Join the MISÙ Franchise</a>
+      </div>
+    </section>
+
+    <!-- TEASER STRIP -->
+    <section id="more" class="teaser-strip">
+      <a class="teaser-card" href="#events" data-magnetic>
+        <span class="teaser-eyebrow">Private &amp; Pop-Up</span>
+        <span class="teaser-title">Events</span>
+      </a>
+      <a class="teaser-card" href="#franchise" data-magnetic>
+        <span class="teaser-eyebrow">Bring MISÙ Home</span>
+        <span class="teaser-title">Franchise</span>
+      </a>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="footer-brand"><img src="/images/brand/misu-logo-white.webp" alt="MISÙ" /></div>
+      <form class="footer-form" onsubmit="return false">
+        <label for="footerEmail">Get first access to new flavours</label>
+        <div class="footer-form-row">
+          <input id="footerEmail" type="email" placeholder="your@email.com" />
+          <button type="submit" data-magnetic>Join</button>
+        </div>
+      </form>
+    </div>
+    <div class="footer-bottom">
+      <p>11 Warwick Street, Cavendish Close, Claremont · info@misucafe.co.za</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/misu_cafe_sa" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com/@misu_cafe_sa" target="_blank" rel="noopener">TikTok</a>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> MISÙ Café. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
