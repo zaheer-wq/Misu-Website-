@@ -341,6 +341,65 @@ Also removed: the "Order Now" button that sat in the header — the nav
 now closes with just the brand mark on the left and the section links on
 the right.
 
+## SEO
+
+Everything that can be done in code is done. Realistically though: no
+amount of on-page work guarantees a #1 ranking — that also depends on
+things outside this codebase (backlinks, reviews, how much competing
+cafés have invested in SEO, Google's local-pack algorithm). Below is what's
+in place, and what's worth doing next outside the code.
+
+**In the code:**
+
+- `<title>` and meta description rewritten to lead with the actual search
+  terms people use — "tiramisù", "matcha", "Claremont", "Cape Town" —
+  instead of just the brand name. Same copy reused for Open Graph and
+  Twitter card tags, so links shared on WhatsApp/Instagram/X/LinkedIn show
+  a proper preview card instead of a bare URL.
+- `public/og-image.jpg` — a 1200×630 branded share image generated from
+  your real logo and site colours, referenced by the Open Graph/Twitter
+  tags above.
+- JSON-LD structured data (`<script type="application/ld+json">` in
+  `index.html`) describing MISÙ as a `CafeOrCoffeeShop` — name, address,
+  cuisine, socials. This is what lets Google show a rich result (map
+  pin, hours, rating) instead of a plain blue link, *if* it's also backed
+  by a Google Business Profile (see below — that's the part I can't do
+  for you).
+- `robots.txt` and `sitemap.xml` in `public/`, so search engines are
+  explicitly told the site is indexable and where the page lives.
+- `site.webmanifest` plus a full favicon/app-icon set (`favicon.ico`,
+  16/32px PNGs, Apple touch icon, Android icons) generated from your
+  actual logo — a site with a proper favicon and "Add to Home Screen"
+  icon reads as more trustworthy to both users and search engines than
+  one with the default blank-page icon.
+- `lang="en-ZA"` on `<html>` (was generic `en`) — a small local-relevance
+  signal for South African search results.
+- Image alt text was already solid throughout (each photo describes what
+  it actually shows) — left as-is, just double-checked.
+
+**Not in the code — worth doing next, roughly in order of impact:**
+
+1. **Google Business Profile.** For a physical café, this matters more
+   than anything on the website itself — it's what actually shows the pin,
+   hours, reviews, and photos in Maps and the local "3-pack" above normal
+   search results. If you don't have one live yet at
+   business.google.com, this is the single highest-leverage thing you can
+   do this week.
+2. **Give me your phone number and real opening hours** and I'll add them
+   to the JSON-LD block (`telephone` and `openingHoursSpecification`) — I
+   deliberately left them out rather than guess.
+3. **Reviews.** Google (and Instagram/TikTok mentions) reward businesses
+   with a steady stream of recent, genuine reviews. Worth a small sign or
+   till-side prompt asking happy customers to leave one.
+4. **Backlinks.** Getting listed on Cape Town food blogs, "best desserts
+   in Claremont" roundups, and halaal/dessert directories (you're already
+   listed on Hungry For Halaal) all help. Local backlinks tend to matter
+   more for local search than generic ones.
+5. **Keep publishing.** A static homepage that never changes gives
+   search engines little reason to recrawl it often. Once there's a
+   real content stream — new flavour drops, events, Instagram posts — it's
+   worth linking back to the site from those.
+
 ## Brand colours
 
 I couldn't pull your exact hex codes (only text/structure from your live
