@@ -166,6 +166,13 @@ flavour, drop a same-style export into `public/images/matcha/` and add one
 line to the `MATCHA` array (you'll also want to adjust the grid's column
 count to fit).
 
+Below 720px wide, the pinned/scrubbed scene is dropped entirely — a fixed
+`100svh` frame can't fit the heading, copy, and full 2×4 grid together on a
+phone without clipping something, so `.matcha-pin` unpins to normal
+document flow (same treatment as `prefers-reduced-motion`) and
+`initMatchaScene()` returns early. The video becomes a static banner above
+the grid instead of a pinned backdrop.
+
 ### The tiramisu photo layers
 
 Source: the 6 individually-exported layer photos you sent (each already
@@ -182,6 +189,12 @@ it overlaps the layer below are hand-tuned in the `.t-drizzle` / `.t-swirl` /
 or differently-cropped source shots, drop them into
 `public/images/layers/` with the same filenames and those width/overlap
 numbers may need a small nudge to match the new proportions.
+
+Same mobile/reduced-motion story as the matcha scene above: below 720px
+wide, `.layers-pin` unpins to normal document flow instead of clipping the
+cup against a fixed `100svh` frame, and `initTiramisuLayers()` returns
+early — the cup renders fully built (its resting, un-animated pose) rather
+than mid-scroll-scrub.
 
 ### The flavour carousel
 
@@ -204,6 +217,15 @@ each card keeps its own accent tone. To add a ninth flavour, drop a
 same-style trimmed `.webp` into `public/images/flavours/` and add one line
 to the `FLAVOURS` array with its name, description, and pixel dimensions
 (used to reserve layout space and avoid a jump as it loads).
+
+The drag/swipe is axis-locked on touch devices (`initDragCarousel()` in
+`src/modules/flavours.js`): the first few pixels of a touch move decide
+whether the gesture reads as horizontal or vertical. Horizontal locks the
+carousel drag and blocks page scroll for the rest of that gesture (via
+`preventDefault()`); vertical immediately releases the carousel and lets
+the page scroll as normal. `touch-action: pan-y` on `.flavour-carousel` in
+`src/style.css` backs this up at the CSS layer. Mouse drag on desktop is
+unaffected — it never had a scroll conflict to begin with.
 
 ### Our Space
 
@@ -341,6 +363,13 @@ Events and Franchise are all anchor links to sections on this one page,
 not separate pages. Once you're happy with the direction, the natural
 next step is turning each nav item into its own page using the same
 visual language.
+
+The footer newsletter form ("Join") validates the email address and shows
+an inline confirmation, but there's no backend behind it yet — nothing is
+actually captured or emailed anywhere. `initFooterForm()` in `src/main.js`
+is written so the submit handler is the only place that needs to change:
+swap its body for a `fetch()` call to a real email service (Mailchimp,
+Klaviyo, Formspree, etc.) once you've picked one.
 
 ## Run it locally
 

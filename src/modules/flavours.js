@@ -24,11 +24,18 @@ export function renderFlavourCards(trackEl) {
 export function initDragCarousel(wrapperEl, trackEl) {
   let isDown = false;
   let startX = 0;
+  let startY = 0;
   let scrollStart = 0;
   let current = 0;
   let velocity = 0;
   let lastX = 0;
   let raf;
+  // Touch gestures are axis-locked on first movement: once a swipe reads
+  // as horizontal we drag the carousel and suppress page scroll for the
+  // rest of that gesture; if it reads as vertical we let go immediately
+  // and hand it back to normal page scrolling. Mouse drag has no such
+  // ambiguity, so it skips the lock entirely.
+  let dragAxis = null;
 
   const maxScroll = () => Math.max(0, trackEl.scrollWidth - wrapperEl.clientWidth);
 
@@ -39,8 +46,10 @@ export function initDragCarousel(wrapperEl, trackEl) {
 
   function pointerDown(e) {
     isDown = true;
+    dragAxis = e.touches ? null : 'x';
     wrapperEl.classList.add('is-dragging');
     startX = (e.touches ? e.touches[0].clientX : e.clientX);
+    startY = (e.touches ? e.touches[0].clientY : e.clientY);
     scrollStart = current;
     velocity = 0;
     lastX = startX;
@@ -48,7 +57,24 @@ export function initDragCarousel(wrapperEl, trackEl) {
   }
   function pointerMove(e) {
     if (!isDown) return;
-    const x = (e.touches ? e.touches[0].clientX : e.clientX);
+    const isTouch = !!e.touches;
+    const x = (isTouch ? e.touches[0].clientX : e.clientX);
+    const y = (isTouch ? e.touches[0].clientY : e.clientY);
+
+    if (isTouch && dragAxis === null) {
+      const dx = x - startX;
+      const dy = y - startY;
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return; // not enough movement to tell yet
+      dragAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if (dragAxis === 'y') {
+        // Vertical intent — bow out and let the page scroll normally.
+        isDown = false;
+        wrapperEl.classList.remove('is-dragging');
+        return;
+      }
+    }
+    if (isTouch && dragAxis === 'x' && e.cancelable) e.preventDefault();
+
     const delta = x - startX;
     setPos(scrollStart + delta);
     velocity = x - lastX;
@@ -57,6 +83,7 @@ export function initDragCarousel(wrapperEl, trackEl) {
   function pointerUp() {
     if (!isDown) return;
     isDown = false;
+    dragAxis = null;
     wrapperEl.classList.remove('is-dragging');
     momentum();
   }
@@ -75,7 +102,7 @@ export function initDragCarousel(wrapperEl, trackEl) {
   wrapperEl.addEventListener('mousedown', pointerDown);
   wrapperEl.addEventListener('touchstart', pointerDown, { passive: true });
   window.addEventListener('mousemove', pointerMove);
-  window.addEventListener('touchmove', pointerMove, { passive: true });
+  window.addEventListener('touchmove', pointerMove, { passive: false });
   window.addEventListener('mouseup', pointerUp);
   window.addEventListener('touchend', pointerUp);
   wrapperEl.addEventListener('wheel', onWheel, { passive: false });

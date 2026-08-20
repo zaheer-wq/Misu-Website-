@@ -8,6 +8,11 @@ import { initSpotlight } from './modules/spotlight.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Pinned/scrubbed sections (Rich Layers, Matcha) can't fit their full
+// content inside a fixed 100svh frame on short phone viewports, so they
+// drop the pin/scrub below this breakpoint — same threshold the CSS uses
+// to unpin `.layers-pin` / `.matcha-pin` back to normal document flow.
+const isPinnedSectionMobile = window.matchMedia('(max-width: 720px)').matches;
 
 /* ---------------------------------------------------------
    Preloader
@@ -148,6 +153,12 @@ const LAYER_COPY = [
 function initTiramisuLayers() {
   const section = document.getElementById('tiramisu');
   const stack = document.getElementById('tiramisuStack');
+  if (!section || !stack) return;
+  // CSS unpins `.layers-pin` to normal flow at this same breakpoint (and
+  // for reduced motion), so the cup renders fully built with no scroll-
+  // driven exploded pose — skip the pin/scrub timeline entirely rather
+  // than fight a container that's no longer a fixed 100svh frame.
+  if (prefersReducedMotion || isPinnedSectionMobile) return;
   const layers = Array.from(stack.querySelectorAll('.t-photo[data-layer]'))
     .sort((a, b) => Number(a.dataset.layer) - Number(b.dataset.layer)); // 0 = lands first
   const heading = document.getElementById('layersHeading');
@@ -308,7 +319,7 @@ function initMatchaScene() {
   const dim = document.getElementById('matchaVideoDim');
   if (!section || !video || !head || !grid) return;
 
-  if (prefersReducedMotion) return; // CSS media query drops the pin/scrub entirely
+  if (prefersReducedMotion || isPinnedSectionMobile) return; // CSS media query drops the pin/scrub entirely
 
   gsap.set(grid, { autoAlpha: 0, y: 30 });
 
@@ -350,6 +361,48 @@ function initMagnetic() {
 }
 
 /* ---------------------------------------------------------
+   Footer newsletter signup — no backend yet, so "Join" validates the
+   address and gives clear visible feedback instead of doing nothing.
+   Swap the body of the try block for a real fetch() to an email
+   service (Mailchimp/Klaviyo/Formspree etc.) once one is connected.
+--------------------------------------------------------- */
+function initFooterForm() {
+  const form = document.getElementById('footerForm');
+  const input = document.getElementById('footerEmail');
+  const message = document.getElementById('footerFormMessage');
+  if (!form || !input || !message) return;
+
+  const button = form.querySelector('button[type="submit"]');
+  let resetTimer = null;
+
+  const showMessage = (text, isError) => {
+    clearTimeout(resetTimer);
+    message.textContent = text;
+    message.classList.toggle('is-error', !!isError);
+    message.classList.add('is-visible');
+  };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (!input.checkValidity() || !input.value.trim()) {
+      showMessage('Please enter a valid email address.', true);
+      input.focus();
+      return;
+    }
+
+    if (button) button.disabled = true;
+    showMessage(`Thanks — we'll send new flavours to ${input.value.trim()}.`, false);
+    form.reset();
+    if (button) button.disabled = false;
+
+    resetTimer = setTimeout(() => {
+      message.classList.remove('is-visible');
+    }, 6000);
+  });
+}
+
+/* ---------------------------------------------------------
    Boot
 --------------------------------------------------------- */
 function boot() {
@@ -375,6 +428,7 @@ function boot() {
   initMatchaGridMotion(matchaGrid);
 
   initSpotlight(document.getElementById('spotlightStage'), document.getElementById('spotlightObject'));
+  initFooterForm();
 
   // Delay layers/scroll setup slightly so layout has settled (fonts/images).
   requestAnimationFrame(() => {

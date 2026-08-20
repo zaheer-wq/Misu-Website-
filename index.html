@@ -340,12 +340,13 @@
   <footer class="site-footer">
     <div class="footer-top">
       <div class="footer-brand"><img src="/images/brand/misu-logo-white.webp" alt="MISÙ" /></div>
-      <form class="footer-form" onsubmit="return false">
+      <form class="footer-form" id="footerForm" novalidate>
         <label for="footerEmail">Get first access to new flavours</label>
         <div class="footer-form-row">
-          <input id="footerEmail" type="email" placeholder="your@email.com" />
+          <input id="footerEmail" type="email" placeholder="your@email.com" required autocomplete="email" />
           <button type="submit" data-magnetic>Join</button>
         </div>
+        <p class="footer-form-message" id="footerFormMessage" role="status" aria-live="polite"></p>
       </form>
     </div>
     <div class="footer-bottom">
