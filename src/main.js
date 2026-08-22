@@ -8,11 +8,6 @@ import { initSpotlight } from './modules/spotlight.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-// Pinned/scrubbed sections (Rich Layers, Matcha) can't fit their full
-// content inside a fixed 100svh frame on short phone viewports, so they
-// drop the pin/scrub below this breakpoint — same threshold the CSS uses
-// to unpin `.layers-pin` / `.matcha-pin` back to normal document flow.
-const isPinnedSectionMobile = window.matchMedia('(max-width: 720px)').matches;
 
 /* ---------------------------------------------------------
    Preloader
@@ -154,11 +149,13 @@ function initTiramisuLayers() {
   const section = document.getElementById('tiramisu');
   const stack = document.getElementById('tiramisuStack');
   if (!section || !stack) return;
-  // CSS unpins `.layers-pin` to normal flow at this same breakpoint (and
-  // for reduced motion), so the cup renders fully built with no scroll-
-  // driven exploded pose — skip the pin/scrub timeline entirely rather
-  // than fight a container that's no longer a fixed 100svh frame.
-  if (prefersReducedMotion || isPinnedSectionMobile) return;
+  // CSS fully unpins `.layers-pin` under prefers-reduced-motion, so the cup
+  // renders fully built with no scroll-driven exploded pose — skip the
+  // pin/scrub timeline entirely rather than fight a container that's no
+  // longer a fixed 100svh frame. Mobile keeps the pin/scrub (see the
+  // mobile media query in style.css for how the layout stays compact
+  // enough to fit within 100svh without clipping).
+  if (prefersReducedMotion) return;
   const layers = Array.from(stack.querySelectorAll('.t-photo[data-layer]'))
     .sort((a, b) => Number(a.dataset.layer) - Number(b.dataset.layer)); // 0 = lands first
   const heading = document.getElementById('layersHeading');
@@ -319,7 +316,7 @@ function initMatchaScene() {
   const dim = document.getElementById('matchaVideoDim');
   if (!section || !video || !head || !grid) return;
 
-  if (prefersReducedMotion || isPinnedSectionMobile) return; // CSS media query drops the pin/scrub entirely
+  if (prefersReducedMotion) return; // CSS media query drops the pin/scrub entirely
 
   gsap.set(grid, { autoAlpha: 0, y: 30 });
 

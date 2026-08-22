@@ -281,7 +281,22 @@ p { margin: 0; }
 .t-photo[data-layer="6"]   { z-index: 17; } /* drizzle */
 
 @media (max-width: 720px) {
-  .tiramisu-photo-stack { width: min(240px, 54vw); }
+  /* Keeps the pin/scrub build animation (unlike the reduced-motion
+     fallback below) — the cup is the whole point on mobile too. To fit
+     copy + cup inside a fixed 100svh frame without clipping, the
+     paragraph description is dropped and the heading/cup are both
+     shrunk; see initTiramisuLayers() in main.js, unchanged on mobile. */
+  .layers-pin {
+    grid-template-columns: 1fr; align-content: center; justify-items: center;
+    padding-top: 0; padding-bottom: 0; gap: 14px; text-align: center;
+  }
+  .layers-copy { max-width: 100%; margin: 0 auto; }
+  .layers-copy h2 { font-size: clamp(1.15rem, 5.2vw, 1.5rem); min-height: 2.4em; line-height: 1.2; }
+  .layers-desc { display: none; }
+  .layers-progress { margin: 10px auto 0; width: 140px; }
+  .layers-visual { min-height: 0; }
+  .tiramisu-photo-stack { width: min(170px, 42vw); }
+  .layers-section { height: 320vh; }
 }
 
 /* =========================================================
@@ -405,19 +420,31 @@ p { margin: 0; }
 }
 
 @media (max-width: 720px) {
-  /* Same problem as Rich Layers below: the pinned 100svh frame can't fit
-     copy plus a full flavour grid without clipping on phone viewports, so
-     below this breakpoint the section unpins to normal flow (same
-     treatment as the reduced-motion fallback above). initMatchaScene()
-     bails out at the same breakpoint. */
-  .matcha-section { height: auto; padding: 0 0 70px; }
-  .matcha-pin { position: static; height: auto; }
-  .matcha-video-bg { position: relative; height: 62vh; min-height: 380px; }
-  .matcha-video-bg video { transform: none; }
-  .matcha-content { display: block; height: auto; padding: 40px clamp(20px,5vw,64px) 0; }
-  .matcha-scene { position: static; margin: 0 auto 10px; }
-  .matcha-video-caption { position: static; display: block; margin: 14px clamp(20px,5vw,64px) 0; }
-  .matcha-grid { grid-template-columns: repeat(2, minmax(120px, 170px)); gap: 12px; }
+  /* Keeps the pin/scrub video-to-grid scene (unlike the reduced-motion
+     fallback below) — swiping through flavours over the video is the
+     point on mobile too. The grid switches from a 4x2 layout to a single
+     horizontally-scrollable row so it stays short enough to fit inside a
+     fixed 100svh pinned frame regardless of device height. This is real
+     `overflow-x` scrolling (not the flavour carousel's transform-drag),
+     so the browser handles the touch axis correctly on its own — a
+     horizontal swipe scrolls the row, a vertical one passes straight
+     through to the page, no JS needed. */
+  .matcha-content { padding: 56px clamp(20px,5vw,64px) 24px; }
+  /* #matchaHead reuses the generic .section-head component (110px/50px
+     padding, sized for normal non-pinned sections) — way too much
+     overhead for a compact pinned overlay, so it's zeroed out and the
+     heading shrunk here specifically. */
+  #matchaHead { padding: 0; }
+  #matchaHead h2 { font-size: clamp(1.25rem, 5.8vw, 1.65rem); line-height: 1.3; }
+  #matchaHead .section-sub { font-size: 0.82rem; margin-top: 14px; }
+  .matcha-grid {
+    grid-template-columns: unset; display: flex; overflow-x: auto;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+    gap: 12px; padding: 0 8px 6px; margin: 0 -8px; justify-content: flex-start;
+    scrollbar-width: none;
+  }
+  .matcha-grid::-webkit-scrollbar { display: none; }
+  .matcha-flavour-card { scroll-snap-align: center; flex: 0 0 148px; }
 }
 
 /* No pin, no scrub, no idle motion — just the video as a normal banner
@@ -707,24 +734,10 @@ p { margin: 0; }
   * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-@media (max-width: 720px) {
-  /* The pinned 100svh frame can't fit the full copy + cup stack on short
-     phone viewports without clipping, so below this breakpoint the
-     section drops the pin/scrub and lays out normally instead.
-     initTiramisuLayers() bails out at the same breakpoint, leaving the
-     cup shown fully built (its resting, un-animated state). */
-  .layers-section { height: auto; padding: 60px 0 70px; }
-  .layers-pin {
-    position: static; height: auto; display: block; text-align: center; padding-top: 0; overflow: visible;
-  }
-  .layers-copy { max-width: 100%; margin: 0 auto; }
-  .layers-progress { display: none; }
-  .layers-visual { margin-top: 36px; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  /* Rich Layers had no reduced-motion fallback before — same unpin
-     treatment as the mobile breakpoint above and as .matcha-pin below. */
+  /* Rich Layers had no reduced-motion fallback before — full unpin,
+     same treatment as .matcha-pin below (mobile keeps the pin/scrub —
+     see the mobile media query further up for how it stays compact). */
   .layers-section { height: auto; padding: 60px 0 70px; }
   .layers-pin {
     position: static; height: auto; display: block; text-align: center; padding-top: 0; overflow: visible;

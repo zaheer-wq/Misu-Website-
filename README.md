@@ -166,12 +166,23 @@ flavour, drop a same-style export into `public/images/matcha/` and add one
 line to the `MATCHA` array (you'll also want to adjust the grid's column
 count to fit).
 
-Below 720px wide, the pinned/scrubbed scene is dropped entirely — a fixed
-`100svh` frame can't fit the heading, copy, and full 2×4 grid together on a
-phone without clipping something, so `.matcha-pin` unpins to normal
-document flow (same treatment as `prefers-reduced-motion`) and
-`initMatchaScene()` returns early. The video becomes a static banner above
-the grid instead of a pinned backdrop.
+Below 720px wide, the pin/scrub scene is kept (it's the whole interactive
+point of this section) but reshaped to actually fit a fixed `100svh`
+frame: `#matchaHead` sheds the generic `.section-head` component's
+110px/50px padding and shrinks its heading, and — the bigger change —
+`.matcha-grid` switches from a 4×2 layout to a single horizontally
+scrollable row of cards (`overflow-x: auto` + `scroll-snap`), so its
+height stays constant (~150px) no matter how many flavours there are,
+instead of growing with the row count. Swiping through flavours over the
+video becomes a left-right gesture on mobile instead of a static grid —
+arguably closer to the flavour carousel elsewhere on the page than a
+downgrade. Because this is real native horizontal scrolling (not a
+transform-drag like the flavour carousel), the browser handles the touch
+axis correctly on its own: a horizontal swipe scrolls the row, a vertical
+one passes straight through to the page — no JS axis-locking needed here.
+`prefers-reduced-motion` still gets the full static/unpinned fallback
+(see the media query below this one) since that's a real accessibility
+requirement, not a device-width one.
 
 ### The tiramisu photo layers
 
@@ -190,11 +201,16 @@ or differently-cropped source shots, drop them into
 `public/images/layers/` with the same filenames and those width/overlap
 numbers may need a small nudge to match the new proportions.
 
-Same mobile/reduced-motion story as the matcha scene above: below 720px
-wide, `.layers-pin` unpins to normal document flow instead of clipping the
-cup against a fixed `100svh` frame, and `initTiramisuLayers()` returns
-early — the cup renders fully built (its resting, un-animated pose) rather
-than mid-scroll-scrub.
+Same story as the matcha scene above: below 720px wide, the pin/scrub
+build animation is kept rather than dropped — the exploded-to-assembled
+cup build is the point on mobile too. To make it actually fit a fixed
+`100svh` frame, the paragraph description is hidden (`.layers-desc {
+display: none }`), the heading shrinks, and the cup stack itself shrinks
+further (`min(170px, 42vw)` vs. desktop's `min(300px, 58vw)`). Verified
+against iPhone SE (375×667), a standard 390×844 phone, and a compact
+Android size (360×740) — the assembled cup comfortably clears the
+viewport with room to spare on all three. `prefers-reduced-motion` gets
+its own full unpin below (a real accessibility need, unlike phone width).
 
 ### The flavour carousel
 
